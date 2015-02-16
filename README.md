@@ -22,3 +22,7 @@ require_once 'numd.php';
 numd(14, 'рубль', 'рубля', 'рублей');
 // 14 рублей
 ```
+
+## License
+
+  MIT
