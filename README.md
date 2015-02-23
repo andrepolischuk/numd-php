@@ -14,12 +14,12 @@ require_once 'numd.php';
 
 ## API
 
-### numd($num, $nominative, $genitiveSingular, $genitivePlural)
+### Numd::decline($num, $nominative, $genitiveSingular, $genitivePlural)
 
   Получаем слово в нужном склонении
 
 ```php
-numd(14, 'рубль', 'рубля', 'рублей');
+Numd::decline(14, 'рубль', 'рубля', 'рублей');
 // 14 рублей
 ```
 
