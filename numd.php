@@ -3,63 +3,57 @@
   class Numd {
 
     /**
-     * Decline value
-     * @param  number $num
-     * @param  array  $word
-     * @return string
+     * Genetive singular test
+     * @param  number  $num
+     * @return boolean
      */
 
-    private static function decline($num, $word) {
-
-      $num = abs($num);
-
-      // fractional
-      if ((float) floor($num) !== $num) {
-        return $word[1];
-      }
-
-      // integer
-      if ($num > 10 && (($num % 100) - (($num % 100) % 10)) / 10 === 1) {
-        return $word[2];
-      } else {
-        $nn = $num % 10;
-        return $word[($nn === 0 || $nn >= 5) ? 2 : ($nn >= 2 ? 1 : 0)];
-      }
-
+    private static function isGenitiveSingular($num) {
+      return (float) floor($num) !== $num || $num % 10 >= 2;
     }
 
     /**
-     * Numd call
-     * @param  array $arguments
+     * Genetive plural test
+     * @param  number  $num
+     * @return boolean
+     */
+
+    private static function isGenitivePlural($num) {
+      $nn = $num % 10;
+      return ($num > 10 && (($num % 100) - (($num % 100) % 10)) / 10 == 1) ||
+        ($nn == 0 || $nn >= 5);
+    }
+
+    /**
+     * Numeral decline
+     * @param  number $num
+     * @param  string $nominative
+     * @param  string $genitiveSingular
+     * @param  string $genitivePlural
      * @return string
      */
 
-    public static function call($arguments) {
+    public static function decline($num, $nominative, $genitiveSingular, $genitivePlural) {
 
-      $num  = (float) $arguments[0];
-      $word = $arguments;
+      $num  = (float) $num;
 
-      array_splice($word, 0, 1);
+      if (count(func_get_args()) !== 4) {
+        return;
+      }
 
-      if (count($word) === 3) {
-        return $num . ' ' . self::decline($num, $word);
+      $res = $num . ' ';
+      $num = abs($num);
+
+      if (self::isGenitivePlural($num)) {
+        return $res . $genitivePlural;
+      } else if (self::isGenitiveSingular($num)) {
+        return $res . $genitiveSingular;
+      } else {
+        return $res . $nominative;
       }
 
     }
 
-  }
-
-  /**
-   * Numd wrapper
-   * @param  number $num
-   * @param  string $nominative
-   * @param  string $genitiveSingular
-   * @param  string $genitivePlural
-   * @return string
-   */
-
-  function numd() {
-    return Numd::call(func_get_args());
   }
 
 ?>
